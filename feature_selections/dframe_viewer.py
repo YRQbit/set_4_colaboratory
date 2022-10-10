@@ -1,8 +1,8 @@
 import variance_viewer
-  # from variance_viewer import dframe_variance
-from variance_viewer import *
+from variance_viewer import dframe_variance
+# from variance_viewer import *
 
-dframe_variance = variance_viewer.dframe_variance
+# dframe_variance = variance_viewer.dframe_variance
 
 def unique_in_df(dframe):
   """
