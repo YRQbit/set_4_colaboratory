@@ -1,0 +1,24 @@
+== На стороне *.ipynb втавляем и выполняем код:
+==
+  sys.path.insert(0,'/content/set_for_colaboratory/feature_selections')
+
+  import signs_selector
+  
+  import pandas as pd
+  df_features = pd.DataFrame({"A":[345,2345,434,23],
+                              "B":[4356,123,1234,34],
+                              "C":[123,123,345,567]})
+
+  df_target = df_features[["B"]].copy()
+  
+  signs_selector.feature_selector(df_features,df_target)[0]
+
+  # def feature_selector(df_features,df_target=pd.DataFrame(), std_upper=0.000001, skew_upper=0.000001, corr_min=0.01, corr_max=1.0):
+  #   """
+  #   df_features            :: фрейм исследуемых переменных (выборка)
+  #   df_target=pd.DataFrame() :: предполагает фрейм из одной (1) переменной (столбец)
+  #   std_upper=0.000001     :: верхний предел допуска примет значение по умолчанию == среднее по всем показателям
+  #   skew_upper=0.000001    :: верхний предел допуска примет значение по умолчанию == среднее по всем показателям
+  #   corr_min=0.01          :: по умолчанию нижний предел допуска 0.01
+  #   corr_max=1.0           :: по умолчанию верхний предел допуска 1.0
+  
