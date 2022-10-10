@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+
 import variance_viewer
 from variance_viewer import dframe_variance
   # from variance_viewer import *
