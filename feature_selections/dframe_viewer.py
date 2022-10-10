@@ -2,6 +2,7 @@ import variance_viewer
 from variance_viewer import dframe_variance
   # from variance_viewer import *
 import skew_viewer
+from skew_viewer import feature_skew
 
 # dframe_variance = variance_viewer.dframe_variance
 
