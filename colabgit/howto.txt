@@ -1,0 +1,13 @@
+== На стороне google colaboratory, копируем-вставляем код:
+==
+  !mkdir ./colabgit/
+
+  !wget https://raw.githubusercontent.com/YRQbit/set_for_colaboratory/main/colabgit/git_checker.py -O ./colabgit/git_checker.py /
+
+  print("\n")
+
+  import sys
+
+  sys.path.insert(0,'/content/colabgit/')
+
+  import git_checker
