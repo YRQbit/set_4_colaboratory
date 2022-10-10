@@ -1,8 +1,12 @@
 import variance_viewer
 from variance_viewer import dframe_variance
   # from variance_viewer import *
+  # не работает
 import skew_viewer
 from skew_viewer import feature_skew
+
+import outliers_viewer
+from outliers_viewer import qq_outliers_4_all
 
 # dframe_variance = variance_viewer.dframe_variance
 
