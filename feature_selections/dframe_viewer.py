@@ -1,3 +1,28 @@
+def unique_in_df(dframe):
+  """
+  Назначение: список уникальных значений столбцов
+
+  example:
+
+  rows_val_1 = ["a","b","c"]
+  rows_val_2 = ["d","e","f"]
+  df_test = pd.DataFrame({1:rows_val_1,
+                          2:rows_val_2})
+
+  dframe = df_test
+  unique_in_df(dframe)
+
+  example:
+  unique_in_df(dframe=df_test)
+
+  example:
+  unique_in_df(df_test)
+  """
+  for el in dframe.columns:
+    print(f"\033[34m{el}\033[0m",f"::{dframe[el].nunique()}")
+    print(dframe[el].unique())
+    print()
+
 def feature_explorer(dframe,target_name):
 
   # from statistics import variance
