@@ -1,6 +1,6 @@
 import pandas as pd
 
-def feature_selector(df_features,df_target=pd.DataFrame(), std_upper=0.000001, skew_upper=0.000001, corr_min=0.01, corr_max=1.0):
+def feature_selector(df_features,df_target=pd.DataFrame(), std_upper=0.000001, skew_upper=0.000001, corr_min=0.01, corr_max=1.0, returned="result_table"):
   """
   df_features            :: фрейм исследуемых переменных (выборка)
   df_target=pd.DataFrame() :: предполагает фрейм из одной (1) переменной (столбец)
@@ -8,12 +8,14 @@ def feature_selector(df_features,df_target=pd.DataFrame(), std_upper=0.000001, s
   skew_upper=0.000001    :: верхний предел допуска примет значение по умолчанию == среднее по всем показателям
   corr_min=0.01          :: по умолчанию нижний предел допуска 0.01
   corr_max=1.0           :: по умолчанию верхний предел допуска 1.0
+  returned="result_table" :: summary_table \ result_table \ comliance_table
   
   df_comliance = df_results[ 
       ( df_results["std_value"] < std_upper )&
       ( df_results["skew_value"] < skew_upper )&
       ( df_results["corr_value"] > corr_min )&
       ( df_results["corr_value"] < corr_max )] 
+
   """
 
   df_std = pd.DataFrame()
@@ -103,7 +105,13 @@ def feature_selector(df_features,df_target=pd.DataFrame(), std_upper=0.000001, s
     df_results = df_results.fillna("")
       # Преобразовываем NaN-значения в пустые значения
     
-    return df_results,df_comliance
+    if returned == "summary_table": 
+      return df_std
+    elif returned == "result_table": 
+      return df_results
+    elif returned == "comliance_table":
+      return df_comliance
+
 
   else:
     # В случае, когда Таргет не указан явно, используем 
@@ -129,4 +137,10 @@ def feature_selector(df_features,df_target=pd.DataFrame(), std_upper=0.000001, s
     # 
     df_comliance = df_results[ ( df_results["std_value"] < std_upper )&( df_results["skew_value"] < mean_skew ) &( df_results["corr_value"] > corr_min )&( df_results["corr_value"] < corr_max )] 
     
-    return df_results,df_comliance
+    if returned == "summary_table": 
+      return df_std
+    elif returned == "result_table": 
+      return df_results
+    elif returned == "comliance_table":
+      return df_comliance
+      
