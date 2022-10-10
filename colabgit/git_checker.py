@@ -5,6 +5,12 @@
 # git_rep_address = "https://github.com/::your_git_account_name::/::your_repository.git::"
 #
 # git_checker.git_pull_clone(git_rep_address)
+  # первый вызов выполняет clone, если на 
+  # локальной стороне нет каталога репозитория
+# 
+# git_checker.git_pull_clone(git_rep_address)
+  # второй вызов выполняет pull
+# 
 
 
 import os
