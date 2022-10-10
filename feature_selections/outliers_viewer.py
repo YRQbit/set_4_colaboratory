@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+
 def qq_outliers_4_all(dframe,lst_columns=[],return_lst="no"):
   """
   Назначение: IRQ-обнаружение выбросов по всем переменным
