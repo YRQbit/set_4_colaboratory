@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 def feature_selector(df_features,df_target=pd.DataFrame(), std_upper=0.000001, skew_upper=0.000001, corr_min=0.01, corr_max=1.0, returned="result_table"):
   """
