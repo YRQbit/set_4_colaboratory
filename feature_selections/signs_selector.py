@@ -143,7 +143,20 @@ def feature_selector(df_features,df_target=pd.DataFrame(), std_upper=0.000001, s
       return df_results
     elif returned == "comliance_table":
       return df_comliance
-      
+
+
+def get_cube_root(x):
+  """
+  # Источник:
+  # https://pythonru.com/osnovy/kak-izvlech-kubicheskij-koren-v-python
+  """
+    if x < 0:
+        x = abs(x)
+        cube_root = x**(1/3)*(-1)
+    else:
+        cube_root = x**(1/3)
+    return cube_root    
+
 
 def pvalue_selector(dframe):
   """
