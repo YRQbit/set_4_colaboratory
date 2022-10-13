@@ -223,12 +223,6 @@ def pvalue_selector(dframe):
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
   
-  # cvb = pd.DataFrame({"pvalue_jarque_bera": pd.Series(pvalue_jarque_bera, index=[f"{el}_sqrt" for el in dframe.columns]),
-  #                     "pvalue_pearson": pd.Series(pvalue_pearson, index=[f"{el}_sqrt" for el in dframe.columns])
-  #                     })
-
-  
-  df_summary[f"variance"] = pd.Series(v_ariance, index=[f"{el}" for el in dframe.columns])
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
@@ -268,9 +262,6 @@ def pvalue_selector(dframe):
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
   
-  # cvb = pd.DataFrame({"pvalue_jarque_bera": pd.Series(pvalue_jarque_bera, index=[f"{el}_sqrt" for el in dframe.columns]),
-  #                     "pvalue_pearson": pd.Series(pvalue_pearson, index=[f"{el}_sqrt" for el in dframe.columns])
-  #                     })
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
@@ -528,16 +519,17 @@ def pvalue_selector(dframe):
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  pwrTransform_name=[]
   
   for column in dframe.columns:
     try:
       
       if min(dframe[column].values) <= 0 :
         pwrTransform = PowerTransformer(method="yeo-johnson", standardize = False)
-        pwrTransform_name = "pwrTransform_y"
+        pwrTransform_name.append("pwrTransform_y")
       else:
         pwrTransform = PowerTransformer(method="box-cox", standardize = False)
-        pwrTransform_name = "pwrTransform_b"
+        pwrTransform_name.append("pwrTransform_b")
 
       data_norm_fit_transform = pwrTransform.fit_transform(dframe[column].values.reshape(-1,1))
       
@@ -559,8 +551,9 @@ def pvalue_selector(dframe):
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
-                      "variance": variance_lst
-                      }, index=[f"{el}_{pwrTransform_name}" for el in dframe.columns])
+                      "variance": variance_lst}, 
+                      index= list( map(lambda el, name: f"{el}_{name}", dframe.columns, pwrTransform_name))
+                      )
 
   df_summary = df_summary.append(df_res)
 
