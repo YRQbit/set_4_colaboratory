@@ -150,14 +150,14 @@ def get_cube_root(x):
   # Источник:
   # https://pythonru.com/osnovy/kak-izvlech-kubicheskij-koren-v-python
   """
-    if x < 0:
-        x = abs(x)
-        cube_root = x**(1/3)*(-1)
-    else:
-        cube_root = x**(1/3)
-    return cube_root    
+  if x < 0:
+      x = abs(x)
+      cube_root = x**(1/3)*(-1)
+  else:
+      cube_root = x**(1/3)
+  return cube_root    
 
-
+  
 def pvalue_selector(dframe):
   """
   """
