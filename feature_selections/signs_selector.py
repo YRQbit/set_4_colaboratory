@@ -224,12 +224,6 @@ def pvalue_selector(dframe):
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
   
-  # cvb = pd.DataFrame({"pvalue_jarque_bera": pd.Series(pvalue_jarque_bera, index=[f"{el}_sqrt" for el in dframe.columns]),
-  #                     "pvalue_pearson": pd.Series(pvalue_pearson, index=[f"{el}_sqrt" for el in dframe.columns])
-  #                     })
-
-  
-  df_summary[f"variance"] = pd.Series(v_ariance, index=[f"{el}" for el in dframe.columns])
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
