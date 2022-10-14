@@ -150,24 +150,28 @@ def get_cube_root(x):
   # Источник:
   # https://pythonru.com/osnovy/kak-izvlech-kubicheskij-koren-v-python
   """
-    if x < 0:
-        x = abs(x)
-        cube_root = x**(1/3)*(-1)
-    else:
-        cube_root = x**(1/3)
-    return cube_root    
+  if x < 0:
+      x = abs(x)
+      cube_root = x**(1/3)*(-1)
+  else:
+      cube_root = x**(1/3)
+  return cube_root    
 
-
+  
 def pvalue_selector(dframe):
   """
   """
   from scipy import stats
+
+  from statistics import variance
+
 
   df_results = pd.DataFrame()
   df_summary = pd.DataFrame()
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  mean_lst=[]
   
   """
   ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
@@ -182,12 +186,16 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(dframe[column])
       pvalue_pearson.append(p_val)
 
-      v_ariance = round(dframe[column].var(),3)
+      v_ariance = round(variance(dframe[column]),3)
       variance_lst.append(v_ariance)
+
+      m_ean = round(dframe[column].mean(),3)
+      mean_lst.append(m_ean)
   
   df_summary[f"pvalue_jarque_bera"] = pd.Series(pvalue_jarque_bera, index=[f"{el}" for el in dframe.columns])
   df_summary[f"pvalue_pearson"] = pd.Series(pvalue_pearson, index=[f"{el}" for el in dframe.columns])   
   df_summary[f"variance"] = pd.Series(variance_lst, index=[f"{el}" for el in dframe.columns])
+  df_summary[f"mean"] = pd.Series(mean_lst, index=[f"{el}" for el in dframe.columns])
 
 
   """
@@ -201,6 +209,7 @@ def pvalue_selector(dframe):
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  mean_lst=[]
 
   for column in dframe.columns:
     try:
@@ -217,8 +226,11 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(ser_sqrt)
       pvalue_pearson.append(p_val)
 
-      v_ariance = round(data_norm[column].var(),3)
+      v_ariance = round(variance(data_norm[column]),3)
       variance_lst.append(v_ariance)
+
+      m_ean = round(data_norm[column].mean(),3)
+      mean_lst.append(m_ean)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -227,6 +239,7 @@ def pvalue_selector(dframe):
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
+                      "mean":mean_lst,
                       }, index=[f"{el}_sqrt" for el in dframe.columns])
 
   df_summary = df_summary.append(df_res)
@@ -241,6 +254,7 @@ def pvalue_selector(dframe):
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  mean_lst=[]
   
   for column in dframe.columns:
     try:
@@ -256,8 +270,11 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(result)
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(data_norm[column].var(),3)
+      v_ariance = round(variance(data_norm[column]),3)
       variance_lst.append(v_ariance)
+
+      m_ean = round(data_norm[column].mean(),3)
+      mean_lst.append(m_ean)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -265,9 +282,10 @@ def pvalue_selector(dframe):
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
-                      "variance": variance_lst
+                      "variance": variance_lst,
+                      "mean":mean_lst,
                       }, index=[f"{el}_cbrt" for el in dframe.columns])
-
+      
   df_summary = df_summary.append(df_res)
 
   """
@@ -279,6 +297,7 @@ def pvalue_selector(dframe):
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  mean_lst=[]
   
   for column in dframe.columns:
     try:
@@ -293,17 +312,22 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(result)
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(data_norm[column].var(),3)
+      v_ariance = round(variance(data_norm[column]),3)
       variance_lst.append(v_ariance)
+
+      m_ean = round(data_norm[column].mean(),3)
+      mean_lst.append(m_ean)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
   
+  
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
-                      "variance": variance_lst
+                      "variance": variance_lst,
+                      "mean":mean_lst,
                       }, index=[f"{el}_log" for el in dframe.columns])
-
+      
   df_summary = df_summary.append(df_res)
 
 
@@ -319,6 +343,7 @@ def pvalue_selector(dframe):
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  mean_lst=[]
   
   for column in dframe.columns:
     try:
@@ -335,17 +360,22 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(data_norm[column].var(),3)
+      v_ariance = round(variance(data_norm[column]),3)
       variance_lst.append(v_ariance)
+
+      m_ean = round(data_norm[column].mean(),3)
+      mean_lst.append(m_ean)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
   
-
+  
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
-                      "variance": variance_lst
+                      "variance": variance_lst,
+                      "mean":mean_lst,
                       }, index=[f"{el}_min_max" for el in dframe.columns])
+
 
   df_summary = df_summary.append(df_res)
 
@@ -360,6 +390,7 @@ def pvalue_selector(dframe):
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  mean_lst=[]
   
   for column in dframe.columns:
     try:
@@ -374,8 +405,11 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(data_norm[column].var(),3)
+      v_ariance = round(variance(data_norm[column]),3)
       variance_lst.append(v_ariance)
+
+      m_ean = round(data_norm[column].mean(),3)
+      mean_lst.append(m_ean)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -383,8 +417,10 @@ def pvalue_selector(dframe):
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
-                      "variance": variance_lst
+                      "variance": variance_lst,
+                      "mean":mean_lst,
                       }, index=[f"{el}_standart" for el in dframe.columns])
+  
 
   df_summary = df_summary.append(df_res)
 
@@ -399,6 +435,7 @@ def pvalue_selector(dframe):
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  mean_lst=[]
   
   for column in dframe.columns:
     try:
@@ -413,8 +450,11 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(data_norm[column].var(),3)
+      v_ariance = round(variance(data_norm[column]),3)
       variance_lst.append(v_ariance)
+
+      m_ean = round(data_norm[column].mean(),3)
+      mean_lst.append(m_ean)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -422,8 +462,10 @@ def pvalue_selector(dframe):
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
-                      "variance": variance_lst
+                      "variance": variance_lst,
+                      "mean":mean_lst,
                       }, index=[f"{el}_max_abs" for el in dframe.columns])
+
 
   df_summary = df_summary.append(df_res)
 
@@ -438,6 +480,7 @@ def pvalue_selector(dframe):
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  mean_lst=[]
   
   for column in dframe.columns:
     try:
@@ -452,17 +495,22 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
       
-      v_ariance = round(data_norm[column].var(),3)
+      v_ariance = round(variance(data_norm[column]),3)
       variance_lst.append(v_ariance)
 
+      m_ean = round(data_norm[column].mean(),3)
+      mean_lst.append(m_ean)
+      
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
   
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
-                      "variance": variance_lst
+                      "variance": variance_lst,
+                      "mean":mean_lst,
                       }, index=[f"{el}_robust" for el in dframe.columns])
+
 
   df_summary = df_summary.append(df_res)
 
@@ -477,6 +525,7 @@ def pvalue_selector(dframe):
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  mean_lst=[]
   
   for column in dframe.columns:
     try:
@@ -494,8 +543,11 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(data_norm[column].var(),3)
+      v_ariance = round(variance(data_norm[column]),3)
       variance_lst.append(v_ariance)
+
+      m_ean = round(data_norm[column].mean(),3)
+      mean_lst.append(m_ean)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -503,8 +555,10 @@ def pvalue_selector(dframe):
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
-                      "variance": variance_lst
+                      "variance": variance_lst,
+                      "mean":mean_lst,
                       }, index=[f"{el}_qqTransform" for el in dframe.columns])
+
 
   df_summary = df_summary.append(df_res)
 
@@ -520,6 +574,7 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   pwrTransform_name=[]
+  mean_lst=[]
   
   for column in dframe.columns:
     try:
@@ -542,8 +597,11 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(data_norm[column].var(),3)
+      v_ariance = round(variance(data_norm[column]),3)
       variance_lst.append(v_ariance)
+
+      m_ean = round(data_norm[column].mean(),3)
+      mean_lst.append(m_ean)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -551,7 +609,9 @@ def pvalue_selector(dframe):
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
-                      "variance": variance_lst}, 
+                      "variance": variance_lst,
+                      "mean":mean_lst,
+                      },
                       index= list( map(lambda el, name: f"{el}_{name}", dframe.columns, pwrTransform_name))
                       )
 
@@ -568,6 +628,7 @@ def pvalue_selector(dframe):
   pvalue_jarque_bera=[]
   pvalue_pearson=[]
   variance_lst=[]
+  mean_lst=[]
 
   for column in dframe.columns:
     try:
@@ -583,8 +644,11 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(data_norm[column].var(),3)
+      v_ariance = round(variance(dframe[column]),3)
       variance_lst.append(v_ariance)
+
+      m_ean = round(data_norm[column].mean(),3)
+      mean_lst.append(m_ean)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -592,7 +656,8 @@ def pvalue_selector(dframe):
   
   df_res = pd.DataFrame({"pvalue_jarque_bera": pvalue_jarque_bera,
                       "pvalue_pearson": pvalue_pearson,
-                      "variance": variance_lst
+                      "variance": variance_lst,
+                      "mean":mean_lst,
                       }, index=[f"{el}_normalize" for el in dframe.columns])
 
   df_summary = df_summary.append(df_res)
