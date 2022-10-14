@@ -1,3 +1,5 @@
+import pandas as pd
+
 def print_full(x):
     """
     Назначение: вывод полной ширины ячеек таблицы dframe
