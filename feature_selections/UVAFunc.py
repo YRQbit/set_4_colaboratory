@@ -3,6 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+import warnings
+warnings.simplefilter(action="ignore", category=FutureWarning)
+
 def UVA_numeric(data,distplot=True,dist_bins=10,lineplot=False,scatterplot=False):
   """
   # Источник
