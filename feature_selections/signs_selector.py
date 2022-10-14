@@ -50,7 +50,7 @@ def feature_selector(df_features,df_target=pd.DataFrame(), var_max="mean", mean_
   df_std = df_std.append(pd.Series(data = mean_value), ignore_index=True) 
   df_std = df_std.append(pd.Series(data = skew_value), ignore_index=True)
   
-  display(df_std)
+  # display(df_std)
 
   # Транспонирование df_features
   # 
