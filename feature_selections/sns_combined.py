@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
+from statsmodels.graphics.gofplots import qqplot
+from matplotlib import pyplot
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
@@ -35,3 +37,17 @@ def boxplots_viewer(dframe,figsizer=(13,8)):
                     ax=col);
       k+=1
     index+=1
+
+
+def pairplot_viewer(dframe):
+  """
+  """
+  sns.pairplot(dframe)
+  
+  
+def qqplot_viewer(dframe):
+  """
+  """
+  for column in dframe.columns:
+    qqplot(dframe[column], line="s", color="#CCCC99")
+  pyplot.show
