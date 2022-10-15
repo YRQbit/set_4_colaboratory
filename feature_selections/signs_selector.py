@@ -700,6 +700,16 @@ def pvalue_selector(dframe):
 
 def pvalue_test_collection(dframe, alpha=0.05, test_name=["jarque_bera"]):
   """
+  Пример:
+  import pandas as pd
+
+  df_pandas = pd.DataFrame({"A":np.random.poisson(5,200),
+                          "B":np.random.poisson(5,200),
+                          "C":np.random.poisson(5,200)
+                          })
+                          
+  p_res = pvalue_test_collection( df_pandas, test_name=["shapiro","ks_test","jarque_bera","pearson"])
+  p_res
   """
 
   from scipy import stats
