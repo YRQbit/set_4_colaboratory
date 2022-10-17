@@ -219,19 +219,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(dframe[column])
       pvalue_pearson.append(p_val)
 
-      v_ariance = round(variance(dframe[column]),3)
+      v_ariance = round(variance(dframe[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(dframe[column].mean(),3)
+      m_ean = round(dframe[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = dframe[column].mode().values[0]
+      m_ode = round(dframe[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(dframe[column].median(),3)
+      m_edian = round(dframe[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(dframe[column].skew(),3)
+      s_kew = round(dframe[column].skew(),5)
       skew_lst.append(s_kew)
   
   df_summary[f"pvalue_jarque_bera"] = pd.Series(pvalue_jarque_bera, index=[f"{el}" for el in dframe.columns])
@@ -274,19 +274,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(ser_sqrt)
       pvalue_pearson.append(p_val)
 
-      v_ariance = round(variance(data_norm[column]),3)
+      v_ariance = round(variance(data_norm[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(data_norm[column].mean(),3)
+      m_ean = round(data_norm[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = data_norm[column].mode().values[0]
+      m_ode = round(data_norm[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(data_norm[column].median(),3)
+      m_edian = round(data_norm[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(data_norm[column].skew(),3)
+      s_kew = round(data_norm[column].skew(),5)
       skew_lst.append(s_kew)
       
     except KeyError:
@@ -333,19 +333,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(result)
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(variance(data_norm[column]),3)
+      v_ariance = round(variance(data_norm[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(data_norm[column].mean(),3)
+      m_ean = round(data_norm[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = data_norm[column].mode().values[0]
+      m_ode = round(data_norm[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(data_norm[column].median(),3)
+      m_edian = round(data_norm[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(data_norm[column].skew(),3)
+      s_kew = round(data_norm[column].skew(),5)
       skew_lst.append(s_kew)
       
     except KeyError:
@@ -390,19 +390,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(result)
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(variance(data_norm[column]),3)
+      v_ariance = round(variance(data_norm[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(data_norm[column].mean(),3)
+      m_ean = round(data_norm[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = data_norm[column].mode().values[0]
+      m_ode = round(data_norm[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(data_norm[column].median(),3)
+      m_edian = round(data_norm[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(data_norm[column].skew(),3)
+      s_kew = round(data_norm[column].skew(),5)
       skew_lst.append(s_kew)
       
     except KeyError:
@@ -453,19 +453,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(variance(data_norm[column]),3)
+      v_ariance = round(variance(data_norm[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(data_norm[column].mean(),3)
+      m_ean = round(data_norm[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = data_norm[column].mode().values[0]
+      m_ode = round(data_norm[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(data_norm[column].median(),3)
+      m_edian = round(data_norm[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(data_norm[column].skew(),3)
+      s_kew = round(data_norm[column].skew(),5)
       skew_lst.append(s_kew)
       
     except KeyError:
@@ -513,19 +513,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(variance(data_norm[column]),3)
+      v_ariance = round(variance(data_norm[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(data_norm[column].mean(),3)
+      m_ean = round(data_norm[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = data_norm[column].mode().values[0]
+      m_ode = round(data_norm[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(data_norm[column].median(),3)
+      m_edian = round(data_norm[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(data_norm[column].skew(),3)
+      s_kew = round(data_norm[column].skew(),5)
       skew_lst.append(s_kew)
       
     except KeyError:
@@ -573,19 +573,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(variance(data_norm[column]),3)
+      v_ariance = round(variance(data_norm[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(data_norm[column].mean(),3)
+      m_ean = round(data_norm[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = data_norm[column].mode().values[0]
+      m_ode = round(data_norm[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(data_norm[column].median(),3)
+      m_edian = round(data_norm[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(data_norm[column].skew(),3)
+      s_kew = round(data_norm[column].skew(),5)
       skew_lst.append(s_kew)
       
     except KeyError:
@@ -633,19 +633,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
       
-      v_ariance = round(variance(data_norm[column]),3)
+      v_ariance = round(variance(data_norm[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(data_norm[column].mean(),3)
+      m_ean = round(data_norm[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = data_norm[column].mode().values[0]
+      m_ode = round(data_norm[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(data_norm[column].median(),3)
+      m_edian = round(data_norm[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(data_norm[column].skew(),3)
+      s_kew = round(data_norm[column].skew(),5)
       skew_lst.append(s_kew)
       
     except KeyError:
@@ -696,19 +696,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(variance(data_norm[column]),3)
+      v_ariance = round(variance(data_norm[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(data_norm[column].mean(),3)
+      m_ean = round(data_norm[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = data_norm[column].mode().values[0]
+      m_ode = round(data_norm[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(data_norm[column].median(),3)
+      m_edian = round(data_norm[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(data_norm[column].skew(),3)
+      s_kew = round(data_norm[column].skew(),5)
       skew_lst.append(s_kew)
       
     except KeyError:
@@ -765,19 +765,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(variance(data_norm[column]),3)
+      v_ariance = round(variance(data_norm[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(data_norm[column].mean(),3)
+      m_ean = round(data_norm[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = data_norm[column].mode().values[0]
+      m_ode = round(data_norm[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(data_norm[column].median(),3)
+      m_edian = round(data_norm[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(data_norm[column].skew(),3)
+      s_kew = round(data_norm[column].skew(),5)
       skew_lst.append(s_kew)
       
     except KeyError:
@@ -827,19 +827,19 @@ def transform_collection(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(variance(data_norm[column]),3)
+      v_ariance = round(variance(data_norm[column]),5)
       variance_lst.append(v_ariance)
 
-      m_ean = round(data_norm[column].mean(),3)
+      m_ean = round(data_norm[column].mean(),5)
       mean_lst.append(m_ean)
 
-      m_ode = data_norm[column].mode().values[0]
+      m_ode = round(data_norm[column].mode().values[0],5)
       mode_lst.append(m_ode)
 
-      m_edian = round(data_norm[column].median(),3)
+      m_edian = round(data_norm[column].median(),5)
       median_lst.append(m_edian)
 
-      s_kew = round(data_norm[column].skew(),3)
+      s_kew = round(data_norm[column].skew(),5)
       skew_lst.append(s_kew)
       
     except KeyError:
