@@ -174,6 +174,7 @@ def feature_selector(df_features,df_target=pd.DataFrame(), var_max="mean", mean_
 # feature_selector(df_pandas)
 
 
+
 def get_cube_root(x):
   """
   # Источник:
@@ -184,10 +185,10 @@ def get_cube_root(x):
       cube_root = x**(1/3)*(-1)
   else:
       cube_root = x**(1/3)
-  return cube_root    
+  return cube_root
 
   
-def pvalue_selector(dframe):
+def transform_collection(dframe):
   """
   """
   from scipy import stats
@@ -201,6 +202,9 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
   
   """
   ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
@@ -220,11 +224,23 @@ def pvalue_selector(dframe):
 
       m_ean = round(dframe[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = dframe[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(dframe[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(dframe[column].skew(),3)
+      skew_lst.append(s_kew)
   
   df_summary[f"pvalue_jarque_bera"] = pd.Series(pvalue_jarque_bera, index=[f"{el}" for el in dframe.columns])
   df_summary[f"pvalue_pearson"] = pd.Series(pvalue_pearson, index=[f"{el}" for el in dframe.columns])   
   df_summary[f"variance"] = pd.Series(variance_lst, index=[f"{el}" for el in dframe.columns])
   df_summary[f"mean"] = pd.Series(mean_lst, index=[f"{el}" for el in dframe.columns])
+  df_summary[f"mode"] = pd.Series(mode_lst, index=[f"{el}" for el in dframe.columns])
+  df_summary[f"median"] = pd.Series(median_lst, index=[f"{el}" for el in dframe.columns])
+  df_summary[f"skew"] = pd.Series(skew_lst, index=[f"{el}" for el in dframe.columns])
 
 
   """
@@ -239,6 +255,9 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
 
   for column in dframe.columns:
     try:
@@ -260,6 +279,15 @@ def pvalue_selector(dframe):
 
       m_ean = round(data_norm[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = data_norm[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(data_norm[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(data_norm[column].skew(),3)
+      skew_lst.append(s_kew)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -269,6 +297,9 @@ def pvalue_selector(dframe):
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
                       "mean":mean_lst,
+                      "mode":mode_lst,
+                      "median":median_lst,
+                      "skew":skew_lst
                       }, index=[f"{el}_sqrt" for el in dframe.columns])
 
   df_summary = df_summary.append(df_res)
@@ -284,6 +315,9 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
   
   for column in dframe.columns:
     try:
@@ -304,6 +338,15 @@ def pvalue_selector(dframe):
 
       m_ean = round(data_norm[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = data_norm[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(data_norm[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(data_norm[column].skew(),3)
+      skew_lst.append(s_kew)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -313,6 +356,9 @@ def pvalue_selector(dframe):
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
                       "mean":mean_lst,
+                      "mode":mode_lst,
+                      "median":median_lst,
+                      "skew":skew_lst
                       }, index=[f"{el}_cbrt" for el in dframe.columns])
       
   df_summary = df_summary.append(df_res)
@@ -327,6 +373,9 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
   
   for column in dframe.columns:
     try:
@@ -346,6 +395,15 @@ def pvalue_selector(dframe):
 
       m_ean = round(data_norm[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = data_norm[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(data_norm[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(data_norm[column].skew(),3)
+      skew_lst.append(s_kew)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -355,6 +413,9 @@ def pvalue_selector(dframe):
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
                       "mean":mean_lst,
+                      "mode":mode_lst,
+                      "median":median_lst,
+                      "skew":skew_lst
                       }, index=[f"{el}_log" for el in dframe.columns])
       
   df_summary = df_summary.append(df_res)
@@ -373,6 +434,9 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
   
   for column in dframe.columns:
     try:
@@ -394,6 +458,15 @@ def pvalue_selector(dframe):
 
       m_ean = round(data_norm[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = data_norm[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(data_norm[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(data_norm[column].skew(),3)
+      skew_lst.append(s_kew)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -403,6 +476,9 @@ def pvalue_selector(dframe):
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
                       "mean":mean_lst,
+                      "mode":mode_lst,
+                      "median":median_lst,
+                      "skew":skew_lst
                       }, index=[f"{el}_min_max" for el in dframe.columns])
 
 
@@ -420,6 +496,9 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
   
   for column in dframe.columns:
     try:
@@ -439,6 +518,15 @@ def pvalue_selector(dframe):
 
       m_ean = round(data_norm[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = data_norm[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(data_norm[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(data_norm[column].skew(),3)
+      skew_lst.append(s_kew)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -448,6 +536,9 @@ def pvalue_selector(dframe):
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
                       "mean":mean_lst,
+                      "mode":mode_lst,
+                      "median":median_lst,
+                      "skew":skew_lst
                       }, index=[f"{el}_standart" for el in dframe.columns])
   
 
@@ -465,6 +556,9 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
   
   for column in dframe.columns:
     try:
@@ -484,6 +578,15 @@ def pvalue_selector(dframe):
 
       m_ean = round(data_norm[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = data_norm[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(data_norm[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(data_norm[column].skew(),3)
+      skew_lst.append(s_kew)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -493,6 +596,9 @@ def pvalue_selector(dframe):
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
                       "mean":mean_lst,
+                      "mode":mode_lst,
+                      "median":median_lst,
+                      "skew":skew_lst
                       }, index=[f"{el}_max_abs" for el in dframe.columns])
 
 
@@ -510,6 +616,9 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
   
   for column in dframe.columns:
     try:
@@ -529,6 +638,15 @@ def pvalue_selector(dframe):
 
       m_ean = round(data_norm[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = data_norm[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(data_norm[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(data_norm[column].skew(),3)
+      skew_lst.append(s_kew)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -538,6 +656,9 @@ def pvalue_selector(dframe):
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
                       "mean":mean_lst,
+                      "mode":mode_lst,
+                      "median":median_lst,
+                      "skew":skew_lst
                       }, index=[f"{el}_robust" for el in dframe.columns])
 
 
@@ -555,6 +676,9 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
   
   for column in dframe.columns:
     try:
@@ -577,6 +701,15 @@ def pvalue_selector(dframe):
 
       m_ean = round(data_norm[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = data_norm[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(data_norm[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(data_norm[column].skew(),3)
+      skew_lst.append(s_kew)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -586,6 +719,9 @@ def pvalue_selector(dframe):
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
                       "mean":mean_lst,
+                      "mode":mode_lst,
+                      "median":median_lst,
+                      "skew":skew_lst
                       }, index=[f"{el}_qqTransform" for el in dframe.columns])
 
 
@@ -604,6 +740,9 @@ def pvalue_selector(dframe):
   variance_lst=[]
   pwrTransform_name=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
   
   for column in dframe.columns:
     try:
@@ -631,6 +770,15 @@ def pvalue_selector(dframe):
 
       m_ean = round(data_norm[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = data_norm[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(data_norm[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(data_norm[column].skew(),3)
+      skew_lst.append(s_kew)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -640,6 +788,9 @@ def pvalue_selector(dframe):
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
                       "mean":mean_lst,
+                      "mode":mode_lst,
+                      "median":median_lst,
+                      "skew":skew_lst
                       },
                       index= list( map(lambda el, name: f"{el}_{name}", dframe.columns, pwrTransform_name))
                       )
@@ -658,6 +809,9 @@ def pvalue_selector(dframe):
   pvalue_pearson=[]
   variance_lst=[]
   mean_lst=[]
+  mode_lst=[]
+  median_lst=[]
+  skew_lst=[]
 
   for column in dframe.columns:
     try:
@@ -673,11 +827,20 @@ def pvalue_selector(dframe):
       stat, p_val = stats.normaltest(data_norm[column])
       pvalue_pearson.append(round(p_val,5))
 
-      v_ariance = round(variance(dframe[column]),3)
+      v_ariance = round(variance(data_norm[column]),3)
       variance_lst.append(v_ariance)
 
       m_ean = round(data_norm[column].mean(),3)
       mean_lst.append(m_ean)
+
+      m_ode = data_norm[column].mode().values[0]
+      mode_lst.append(m_ode)
+
+      m_edian = round(data_norm[column].median(),3)
+      median_lst.append(m_edian)
+
+      s_kew = round(data_norm[column].skew(),3)
+      skew_lst.append(s_kew)
       
     except KeyError:
       print("нулевые и отрицательные значения не поддерживаются")
@@ -687,6 +850,9 @@ def pvalue_selector(dframe):
                       "pvalue_pearson": pvalue_pearson,
                       "variance": variance_lst,
                       "mean":mean_lst,
+                      "mode":mode_lst,
+                      "median":median_lst,
+                      "skew":skew_lst
                       }, index=[f"{el}_normalize" for el in dframe.columns])
 
   df_summary = df_summary.append(df_res)
@@ -694,7 +860,7 @@ def pvalue_selector(dframe):
 
   return df_summary
 
-# pvalue_selector(df_pandas)
+# transform_collection(df_pandas)
 
 
 
