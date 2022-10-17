@@ -1,9 +1,9 @@
 from sklearn.preprocessing import QuantileTransformer
+import pandas as pd
 
 def qqTransform(dframe):
   """
   """
-  import pandas as pd
   from sklearn.preprocessing import QuantileTransformer
   
   qqTransform = QuantileTransformer(output_distribution="normal", random_state = 42)
