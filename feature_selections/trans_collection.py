@@ -1,5 +1,6 @@
 from sklearn.preprocessing import QuantileTransformer
 import pandas as pd
+import numpy as np
 
 def qqTransform(dframe):
   """
