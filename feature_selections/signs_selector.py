@@ -13,28 +13,28 @@ def rough_filter(df_features,
   """
   # 
   # 
-  rough filter(df_features,
+  rough_filter(df_features,
                      df_target=pd.DataFrame(), 
                      var_max="mean", 
                      mean_max="mean", 
                      skew_max="mean",  
                      returned="result_table")
 
-  # rough filter(df_pandas_scaler[["A","B","C"]],df_target=df_pandas_scaler[["D"]])
+  # rough_filter(df_pandas_scaler[["A","B","C"]],df_target=df_pandas_scaler[["D"]])
 
-  # rough filter(df_pandas_scaler)
+  # rough_filter(df_pandas_scaler)
 
-  # rough filter(df_pandas_scaler, var_max=10, returned="result_table_s")
+  # rough_filter(df_pandas_scaler, var_max=10, returned="result_table_s")
 
-  # rough filter(df_pandas_scaler, mean_max=15, returned="complience_table_s")
+  # rough_filter(df_pandas_scaler, mean_max=15, returned="complience_table_s")
 
-  # rough filter(df_pandas_scaler, var_max=5, skew_max=0.5, returned="correlation_table_s")
+  # rough_filter(df_pandas_scaler, var_max=5, skew_max=0.5, returned="correlation_table_s")
 
-  # rough filter(df_pandas, returned="result_table")
+  # rough_filter(df_pandas, returned="result_table")
 
-  # rough filter(df_pandas, returned="complience_table")
+  # rough_filter(df_pandas, returned="complience_table")
 
-  # rough filter(df_pandas, returned="correlation_table")
+  # rough_filter(df_pandas, returned="correlation_table")
   """
 
   df_std = pd.DataFrame()
@@ -70,7 +70,7 @@ def rough_filter(df_features,
 
 # ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
 
-  df_scope_out = scope_outliers_filter(df_features)
+  df_scope_out = scope_outliers_filter(df_features)[["column_name","scope","outliers_count"]]
 
   # Наполнение словарей
   # 
@@ -252,9 +252,12 @@ def rough_filter(df_features,
 
   return result
 
+
 # ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
 # ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
 # ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
+
+
 
 def pvalue_test_collection(dframe, alpha=0.05, test_name=["jarque_bera"]):
   """
