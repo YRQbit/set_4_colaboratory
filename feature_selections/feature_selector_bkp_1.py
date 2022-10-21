@@ -1,0 +1,170 @@
+def feature_selector(df_features,df_target=pd.DataFrame(), var_max="mean", mean_max="mean", skew_max="mean", corr_min=0.01, corr_max=1.0, returned="result_table"):
+  """
+  df_features              :: фрейм исследуемых переменных (выборка)
+  df_target=pd.DataFrame() :: предполагает фрейм из одной (1) переменной (столбец)
+  var_max="mean"           :: верхний предел допуска примет значение по умолчанию == среднее по всем показателям
+  mean_max="mean"          :: верхний предел допуска примет значение по умолчанию == среднее по всем показателям
+  skew_max=="mean"         :: верхний предел допуска примет значение по умолчанию == среднее по всем показателям
+  corr_min=0.01            :: по умолчанию нижний предел допуска 0.01
+  corr_max=1.0             :: по умолчанию верхний предел допуска 1.0
+  returned="result_table"  :: summary_table \ result_table \ comliance_table
+  
+  df_comliance = df_results[ 
+      ( df_results["std_value"] < std_upper )&
+      ( df_results["skew_value"] < skew_upper )&
+      ( df_results["corr_value"] > corr_min )&
+      ( df_results["corr_value"] < corr_max )] 
+  """
+
+  df_std = pd.DataFrame()
+  vari_value = {}
+  std_value = {}
+  mean_value={}
+  skew_value = {}
+
+  # Наполнение словарей
+  # 
+  count_features=0
+  for el in df_features.columns:
+    # .
+    std_value[el] = df_features[el].std().round(3)
+      # Добавление пары ключ:значение в dict-словарь
+      # .
+    skew_value[el] = df_features[el].skew().round(3)
+      # Добавление пары ключ:значение в dict-словарь
+      # .
+    vari_value[el] = df_features[el].var().round(3)
+      # 
+    mean_value[el] = df_features[el].mean().round(3)
+
+    count_features+=1
+  
+  # Добавление инфо-строк в df_features
+  # 
+  df_std = df_std.append(pd.Series(data = vari_value), ignore_index=True)
+  df_std = df_std.append(pd.Series(data = std_value), ignore_index=True)
+  df_std = df_std.append(pd.Series(data = mean_value), ignore_index=True) 
+  df_std = df_std.append(pd.Series(data = skew_value), ignore_index=True)
+  
+  # display(df_std)
+
+  # Транспонирование df_features
+  # 
+  df_std = df_std .T.rename(columns = {0:"variance",
+                                       1:"std_value",
+                                       2:"mean_value",
+                                       3:"skew_value"})
+    # Транспонирование фрейма + переименование столбцов(переменных)
+
+  # Добавление пустой строки в df_features
+  # 
+  df_std = df_std.append(pd.Series(name=" "), ignore_index=False)
+  df_std = df_std.fillna("")
+
+  
+
+  # Вычисление средних по std_value и skew_value
+  # 
+  exclude_idx = df_std.index.isin([" "])
+    # получение списка индексов
+    # .
+
+  
+
+  mean_vari = df_std[~exclude_idx].mean().values[0]
+    # 
+  mean_std = df_std[~exclude_idx].mean().values[1]
+    # df_std[~exclude_idx] ==> исключение строк df_features по индексу
+    # .
+  mean_mean = df_std[~exclude_idx].mean().values[2]
+    # df_std[~exclude_idx] ==> исключение строк df_features по индексу
+    # .
+  mean_skew = df_std[~exclude_idx].mean().values[3]
+    # 
+  means_val = {"variance":mean_vari,
+               "std_value":mean_std,
+               "mean_value":mean_mean,
+               "skew_value":mean_skew}
+              # Формирование словаря
+  
+  # Добавление инфо-строки в df_features
+  # 
+  df_std = df_std.append(pd.Series(data = means_val,name="mean_value"), ignore_index=False)
+
+  
+  # Вычисление показателей корреляции
+  # 
+  if (len(df_target.columns) != 0) and (len(df_target.index) != 0):
+    # В случае, когда Таргет указан явно
+
+    target_name = df_target.columns[0]
+
+    # Формирование фрейма корреляции
+    # 
+    df_correlation = df_features.join(df_target, how="left", lsuffix=target_name,rsuffix='')
+      # Добавление столбца из dframe в df через join
+      # .
+    df_correlation = df_correlation.corr()
+      # Создание талицы корреляции переменных
+      # .
+
+    df_results = df_std.iloc[:count_features]
+      # Достаем переменные из фрейма сводного отчета
+      # .
+    df_results["corr_value"] = df_correlation.iloc[:count_features+1][target_name]
+      # Добавляем переменную с показателями корреляции
+      # .
+
+
+    if (var_max == "mean"): var_max = mean_vari
+    if (mean_max == "mean"): mean_max = mean_mean
+    if (skew_max == "mean"): skew_max = mean_skew
+
+    # Формирование выборки по условиям
+    # 
+    df_comliance = df_results[ ( df_results["variance"] < var_max )&( df_results["mean_value"] < mean_max )&( df_results["skew_value"] < skew_max ) &( df_results["corr_value"] > corr_min )&( df_results["corr_value"] < corr_max )] 
+
+    df_results = df_results.fillna("")
+      # Преобразовываем NaN-значения в пустые значения
+    
+    if returned == "summary_table": 
+      return df_std
+    elif returned == "result_table": 
+      return df_results
+    elif returned == "comliance_table":
+      return df_comliance
+
+
+  else:
+    # В случае, когда Таргет не указан явно, используем 
+    # как Таргет последний столбец
+    # .
+    df_correlation = df_features.corr()
+      # Формируем фрейм показателей корреляции
+      # .
+    target_name = df_correlation.columns[-1]
+      # В качестве Таргета принимаем последний столбец
+      # .
+    df_results = df_std.iloc[:count_features]
+      # Достаем переменные из фрейма сводного отчета
+      # .
+    df_results["corr_value"] = df_correlation.iloc[:count_features][target_name]
+      # Добавляем переменную с показателями корреляции
+      # .
+
+    if (var_max == "mean"): var_max = mean_vari
+    if (mean_max == "mean"): mean_max = mean_mean
+    if (skew_max == "mean"): skew_max = mean_skew
+
+    # Формирование выборки по условиям
+    #
+    df_comliance = df_results[ ( df_results["variance"] < var_max )&( df_results["mean_value"] < mean_max )&( df_results["skew_value"] < skew_max ) &( df_results["corr_value"] > corr_min )&( df_results["corr_value"] < corr_max )]
+    
+    if returned == "summary_table": 
+      return df_std
+    elif returned == "result_table": 
+      return df_results
+    elif returned == "comliance_table":
+      return df_comliance
+
+# feature_selector(df_pandas)
