@@ -9,7 +9,7 @@ import skew_viewer
 from skew_viewer import feature_skew
 
 import outliers_viewer
-from outliers_viewer import qq_outliers_4_all
+from outliers_viewer import qq_outliers_dframe
 
 # dframe_variance = variance_viewer.dframe_variance
 
@@ -85,7 +85,7 @@ def feature_explorer(dframe,target_name):
   print("::-::-"*15+"::")
   print("\033[31m\033[43mOUTLIERS:")
   print("\033[0m")
-  qq_outliers_4_all(dframe,lst_columns=dframe.columns,return_lst="no")
+  qq_outliers_dframe(dframe,lst_columns=dframe.columns,return_lst="no")
   print('\n')
 
   print("::-::-"*15+"::")
