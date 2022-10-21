@@ -1,23 +1,40 @@
 import pandas as pd
 import numpy as np
 
-def feature_selector(df_features,df_target=pd.DataFrame(), var_max="mean", mean_max="mean", skew_max="mean", corr_min=0.01, corr_max=1.0, returned="result_table"):
-  """
+from outliers_viewer import scope_outliers_filter
 
-  df_features              :: фрейм исследуемых переменных (выборка)
-  df_target=pd.DataFrame() :: предполагает фрейм из одной (1) переменной (столбец)
-  var_max="mean"           :: верхний предел допуска примет значение по умолчанию == среднее по всем показателям
-  mean_max="mean"          :: верхний предел допуска примет значение по умолчанию == среднее по всем показателям
-  skew_max=="mean"         :: верхний предел допуска примет значение по умолчанию == среднее по всем показателям
-  corr_min=0.01            :: по умолчанию нижний предел допуска 0.01
-  corr_max=1.0             :: по умолчанию верхний предел допуска 1.0
-  returned="result_table"  :: summary_table \ result_table \ comliance_table
-  
-  df_comliance = df_results[ 
-      ( df_results["std_value"] < std_upper )&
-      ( df_results["skew_value"] < skew_upper )&
-      ( df_results["corr_value"] > corr_min )&
-      ( df_results["corr_value"] < corr_max )] 
+def rough_filter(df_features,
+                     df_target=pd.DataFrame(), 
+                     var_max="mean", 
+                     mean_max="mean", 
+                     skew_max="mean",  
+                     returned="result_table"):
+
+  """
+  # 
+  # 
+  rough filter(df_features,
+                     df_target=pd.DataFrame(), 
+                     var_max="mean", 
+                     mean_max="mean", 
+                     skew_max="mean",  
+                     returned="result_table")
+
+  # rough filter(df_pandas_scaler[["A","B","C"]],df_target=df_pandas_scaler[["D"]])
+
+  # rough filter(df_pandas_scaler)
+
+  # rough filter(df_pandas_scaler, var_max=10, returned="result_table_s")
+
+  # rough filter(df_pandas_scaler, mean_max=15, returned="complience_table_s")
+
+  # rough filter(df_pandas_scaler, var_max=5, skew_max=0.5, returned="correlation_table_s")
+
+  # rough filter(df_pandas, returned="result_table")
+
+  # rough filter(df_pandas, returned="complience_table")
+
+  # rough filter(df_pandas, returned="correlation_table")
   """
 
   df_std = pd.DataFrame()
@@ -26,158 +43,225 @@ def feature_selector(df_features,df_target=pd.DataFrame(), var_max="mean", mean_
   mean_value={}
   skew_value = {}
 
-  # Наполнение словарей
-  # 
-  count_features=0
-  for el in df_features.columns:
-    # .
-    std_value[el] = df_features[el].std().round(3)
-      # Добавление пары ключ:значение в dict-словарь
-      # .
-    skew_value[el] = df_features[el].skew().round(3)
-      # Добавление пары ключ:значение в dict-словарь
-      # .
-    vari_value[el] = df_features[el].var().round(3)
-      # 
-    mean_value[el] = df_features[el].mean().round(3)
+# ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
 
-    count_features+=1
-  
-  # Добавление инфо-строк в df_features
-  # 
-  df_std = df_std.append(pd.Series(data = vari_value), ignore_index=True)
-  df_std = df_std.append(pd.Series(data = std_value), ignore_index=True)
-  df_std = df_std.append(pd.Series(data = mean_value), ignore_index=True) 
-  df_std = df_std.append(pd.Series(data = skew_value), ignore_index=True)
-  
-  # display(df_std)
-
-  # Транспонирование df_features
-  # 
-  df_std = df_std .T.rename(columns = {0:"variance",
-                                       1:"std_value",
-                                       2:"mean_value",
-                                       3:"skew_value"})
-    # Транспонирование фрейма + переименование столбцов(переменных)
-
-  # Добавление пустой строки в df_features
-  # 
-  df_std = df_std.append(pd.Series(name=" "), ignore_index=False)
-  df_std = df_std.fillna("")
-
-  
-
-  # Вычисление средних по std_value и skew_value
-  # 
-  exclude_idx = df_std.index.isin([" "])
-    # получение списка индексов
-    # .
-
-  
-
-  mean_vari = df_std[~exclude_idx].mean().values[0]
-    # 
-  mean_std = df_std[~exclude_idx].mean().values[1]
-    # df_std[~exclude_idx] ==> исключение строк df_features по индексу
-    # .
-  mean_mean = df_std[~exclude_idx].mean().values[2]
-    # df_std[~exclude_idx] ==> исключение строк df_features по индексу
-    # .
-  mean_skew = df_std[~exclude_idx].mean().values[3]
-    # 
-  means_val = {"variance":mean_vari,
-               "std_value":mean_std,
-               "mean_value":mean_mean,
-               "skew_value":mean_skew}
-              # Формирование словаря
-  
-  # Добавление инфо-строки в df_features
-  # 
-  df_std = df_std.append(pd.Series(data = means_val,name="mean_value"), ignore_index=False)
-
-  
   # Вычисление показателей корреляции
   # 
   if (len(df_target.columns) != 0) and (len(df_target.index) != 0):
+    # 
     # В случае, когда Таргет указан явно
-
+    # .
     target_name = df_target.columns[0]
-
-    # Формирование фрейма корреляции
-    # 
-    df_correlation = df_features.join(df_target, how="left", lsuffix=target_name,rsuffix='')
-      # Добавление столбца из dframe в df через join
-      # .
-    df_correlation = df_correlation.corr()
-      # Создание талицы корреляции переменных
-      # .
-
-    df_results = df_std.iloc[:count_features]
-      # Достаем переменные из фрейма сводного отчета
-      # .
-    df_results["corr_value"] = df_correlation.iloc[:count_features+1][target_name]
-      # Добавляем переменную с показателями корреляции
-      # .
-
-
-    if (var_max == "mean"): var_max = mean_vari
-    if (mean_max == "mean"): mean_max = mean_mean
-    if (skew_max == "mean"): skew_max = mean_skew
-
-    # Формирование выборки по условиям
-    # 
-    df_comliance = df_results[ ( df_results["variance"] < var_max )&( df_results["mean_value"] < mean_max )&( df_results["skew_value"] < skew_max ) &( df_results["corr_value"] > corr_min )&( df_results["corr_value"] < corr_max )] 
-
-    df_results = df_results.fillna("")
-      # Преобразовываем NaN-значения в пустые значения
     
-    if returned == "summary_table": 
-      return df_std
-    elif returned == "result_table": 
-      return df_results
-    elif returned == "comliance_table":
-      return df_comliance
-
-
+    df_correlation = df_features.join(df_target, how="left", lsuffix=target_name,rsuffix='')
+    df_correlation = df_correlation.corr()
+    
   else:
+
     # В случае, когда Таргет не указан явно, используем 
-    # как Таргет последний столбец
+    # в качестве Таргета последний столбец
     # .
     df_correlation = df_features.corr()
-      # Формируем фрейм показателей корреляции
-      # .
-    target_name = df_correlation.columns[-1]
-      # В качестве Таргета принимаем последний столбец
-      # .
-    df_results = df_std.iloc[:count_features]
-      # Достаем переменные из фрейма сводного отчета
-      # .
-    df_results["corr_value"] = df_correlation.iloc[:count_features][target_name]
-      # Добавляем переменную с показателями корреляции
-      # .
 
-    if (var_max == "mean"): var_max = mean_vari
-    if (mean_max == "mean"): mean_max = mean_mean
-    if (skew_max == "mean"): skew_max = mean_skew
-
-    # Формирование выборки по условиям
-    #
-    df_comliance = df_results[ ( df_results["variance"] < var_max )&( df_results["mean_value"] < mean_max )&( df_results["skew_value"] < skew_max ) &( df_results["corr_value"] > corr_min )&( df_results["corr_value"] < corr_max )]
+    df_target = df_correlation.loc[:, df_correlation.columns[-1]].to_frame()
+    target_name = df_target.columns[0]
     
-    if returned == "summary_table": 
-      return df_std
-    elif returned == "result_table": 
-      return df_results
-    elif returned == "comliance_table":
-      return df_comliance
+    df_features = df_features.loc[:, :df_features.columns[-2]]
 
-# feature_selector(df_pandas)
+# ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
+
+  df_scope_out = scope_outliers_filter(df_features)
+
+  # Наполнение словарей
+  # 
+  for el in df_features.columns:
+    # .
+    std_value[el] = df_features[el].std().round(3)
+    skew_value[el] = df_features[el].skew().round(3)
+    vari_value[el] = df_features[el].var().round(3)
+    mean_value[el] = df_features[el].mean().round(3)
+
+    next
+  
+
+  # Добавление инфо-строк в df_features
+  # 
+  df_std = df_std.append(vari_value, ignore_index=True)\
+                 .append(std_value, ignore_index=True)\
+                 .append(mean_value, ignore_index=True)\
+                 .append(skew_value, ignore_index=True)
+  df_std = df_std.append(df_scope_out.set_index("column_name").T)
+  df_std.rename(index={0: "variance", 1: "std", 2: "mean", 3: "skew"}, inplace=True)
+  
+  means_dic = {"variance_mean": df_std.loc["variance"].mean().round(5),
+               "std_mean": df_std.loc["std"].mean().round(5),
+               "mean_mean": df_std.loc["mean"].mean().round(5),
+               "skew_mean": df_std.loc["skew"].mean().round(5),
+               "scope_mean": df_std.loc["scope"].mean().round(5),
+               "outliers_count_mean":df_std.loc["outliers_count"].mean().round(5)
+               }
+  
+  df_std.insert(0, "means", means_dic.values(), True)
 
 
+  if var_max == "mean": var_max = means_dic["variance_mean"]
+  if mean_max == "mean": mean_max = means_dic["mean_mean"]
+  if skew_max == "mean": skew_max = means_dic["skew_mean"]
+
+
+  df_std = df_std.append(df_correlation[df_features.columns].iloc[-1].rename("corr"))
+
+  # row of scores 
+  # 
+  df_std = df_std.append(pd.Series([0 for el in df_std.columns], name="scores", index=df_std.columns))
+
+# ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
+  
+  for column in df_std.columns:
+    if column == "means": df_std[column].loc["scores"] = np.nan
+    
+    if df_std[column].loc["variance"] > var_max:
+      df_std[column].loc["scores"] += 1
+
+    if df_std[column].loc["std"] < means_dic["std_mean"]: 
+      df_std[column].loc["scores"] += 1
+    
+    if df_std[column].loc["mean"] > mean_max:
+      df_std[column].loc["scores"] += 1
+
+    if (abs(df_std[column].loc["skew"]) <= abs(skew_max)) and(abs(skew_max) <= 1 ): 
+      df_std[column].loc["scores"] += 1
+
+    if (df_std[column].loc["scope"] > means_dic["scope_mean"])\
+    and(df_std[column].loc["outliers_count"] == 0):
+      df_std[column].loc["scores"] += 3
+
+    if (df_std[column].loc["scope"] < means_dic["scope_mean"])\
+    and(df_std[column].loc["outliers_count"] == 0):
+      df_std[column].loc["scores"] += 2
+    
+    elif (df_std[column].loc["scope"] < means_dic["scope_mean"])\
+    and(df_std[column].loc["outliers_count"] < means_dic["outliers_count_mean"]):
+      df_std[column].loc["scores"] += 1
+
+    if (df_std[column].loc["scope"] > means_dic["scope_mean"])\
+    and(df_std[column].loc["outliers_count"] < means_dic["outliers_count_mean"]):
+      df_std[column].loc["scores"] += 1
+
+    if (df_std[column].loc["scope"] < means_dic["scope_mean"])\
+    and(df_std[column].loc["outliers_count"] > means_dic["outliers_count_mean"]):
+      df_std[column].loc["scores"] -= 1
+
+
+  corr_score = {0: 0.1,
+                1: 0.2,
+                2: 0.3,
+                3: 0.4,
+                4: 0.5,
+                5: 0.6,
+                6: 0.7,
+                7: 0.8,
+                8: 0.9,
+                9: 1.0}
+
+  corr_val_lst = [abs(el) for el in df_std.iloc[6,1:] ]
+  corr_score_keys = list(corr_score.keys())
+  scorr_lst=[]
+
+  for usval in corr_val_lst:
+
+    for k, keyval in enumerate(corr_score.values()):
+      
+      if (corr_score_keys[k] == 0) and (usval <= corr_score.get(0)):
+        scorr_lst.append(corr_score_keys[k])
+
+      elif (corr_score_keys[k] == 9) and ( usval >= corr_score.get(9)):
+        scorr_lst.append(corr_score_keys[0])
+    
+      else:
+        xcv = corr_score.get(k+1)
+        if (usval >= keyval) and (usval < xcv): 
+          scorr_lst.append(corr_score_keys[k])
+
+
+  scorr_lst = list(map(sum,zip(df_std.iloc[7,1:],scorr_lst)))
+
+  df_std.iloc[7,1:] = pd.Series([el for el in scorr_lst])
+
+  df_std = df_std.fillna("")
+
+# ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
+
+  def result_table(dframe,s="y"):
+
+    if s == "y":
+      s = dframe.style.set_caption("rough filter :: result_table").set_table_styles([{
+        'selector': 'caption',
+        'props': 'caption-side: header; font-size:1.25em; background-color: lightyellow'
+        }], overwrite=False)
+
+      return s
+    
+    else:
+      return dframe
+
+  def complience_table(dframe,s="y"):
+    
+    mean_val = dframe.loc["scores"][1:].mean() #.count()
+
+    complience = dframe.loc["scores"][1:].sort_values(ascending=False)
+
+    complience_table = complience[:(complience >= mean_val).sum()].to_frame()
+
+    if s == "y":
+
+      s = complience_table.style.set_caption("rough filter :: complience_table").set_table_styles([{
+        'selector': 'caption',
+        'props': 'caption-side: header; font-size:1.25em; background-color: lightyellow'
+        }], overwrite=False)
+
+      return s
+    
+    else:
+      return complience_table
+
+  def correlation_table(dframe,s="y"):
+
+    if s == "y":
+      s = dframe.style.format('{:.5f}')
+      s.set_caption("rough filter :: correlation_table").set_table_styles([{
+          'selector': 'caption',
+         'props': 'caption-side: header; font-size:1.25em; background-color: lightyellow'
+          }], overwrite=False)
+
+      return s
+
+    else: 
+      return dframe
+
+# ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
+
+  result = {
+  'result_table_s': result_table(df_std), #lambda x: x * 5,
+  'complience_table_s': complience_table(df_std), # lambda x: x + 7,
+  'correlation_table_s': correlation_table(df_correlation), # lambda x: x - 2
+  'correlation_table': correlation_table(df_correlation,s="n"),
+  'complience_table': complience_table(df_std,s="n"),
+  'result_table': result_table(df_std,s="n")
+  }[returned] #(x)
+
+  return result
+
+# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
+# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
+# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
 
 def pvalue_test_collection(dframe, alpha=0.05, test_name=["jarque_bera"]):
   """
+  #
+  # .
   Пример:
+  
   import pandas as pd
 
   df_pandas = pd.DataFrame({"A":np.random.poisson(5,200),
@@ -185,7 +269,11 @@ def pvalue_test_collection(dframe, alpha=0.05, test_name=["jarque_bera"]):
                           "C":np.random.poisson(5,200)
                           })
                           
-  p_res = pvalue_test_collection( df_pandas, test_name=["shapiro","ks_test","jarque_bera","pearson"])
+  p_res = pvalue_test_collection( df_pandas, 
+                                  test_name=["shapiro",
+                                             "ks_test",
+                                             "jarque_bera",
+                                             "pearson"])
   p_res
   """
 
@@ -194,9 +282,7 @@ def pvalue_test_collection(dframe, alpha=0.05, test_name=["jarque_bera"]):
   df_result= pd.DataFrame()
 
 
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
+# ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
 
 
   if "jarque_bera" in test_name:
@@ -255,9 +341,7 @@ def pvalue_test_collection(dframe, alpha=0.05, test_name=["jarque_bera"]):
       df_result = df_result.join(df_pval, how="right").fillna(" ")
 
 
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
+# ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
 
 
   if "pearson" in test_name:
@@ -304,9 +388,7 @@ def pvalue_test_collection(dframe, alpha=0.05, test_name=["jarque_bera"]):
       df_result = df_result.join(df_pval, how="right").fillna(" ")
 
 
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
+# ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
 
 
   if "ks_test" in test_name:
@@ -361,9 +443,7 @@ def pvalue_test_collection(dframe, alpha=0.05, test_name=["jarque_bera"]):
       df_result = df_result.join(df_pval, how="right").fillna(" ")
 
 
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
-# ::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::-::
+# ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
 
 
   if "shapiro" in test_name:
