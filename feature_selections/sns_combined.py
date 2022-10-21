@@ -51,3 +51,12 @@ def qqplot_viewer(dframe):
   for column in dframe.columns:
     qqplot(dframe[column], line="s", color="#CCCC99")
   pyplot.show
+
+
+def sns_heatmap(dframe):
+  sns.heatmap(dframe.corr(),
+              xticklabels=dframe.corr().columns, 
+              yticklabels=dframe.corr().columns, 
+              cmap='RdYlGn', 
+              center=0, 
+              annot=True)
