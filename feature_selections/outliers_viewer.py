@@ -1,8 +1,10 @@
 import pandas as pd
 import numpy as np
 
-def qq_outliers_4_all(dframe,lst_columns=[],return_lst="no"):
+def qq_outliers_dframe(dframe,lst_columns=[],return_lst="no"):
   """
+  :
+  :
   Назначение: IRQ-обнаружение выбросов по всем переменным
 
   example:
@@ -45,6 +47,20 @@ def qq_outliers_4_all(dframe,lst_columns=[],return_lst="no"):
 
 def qq_outliers_series(ser_data):
   """
+  :
+  :
+  Подключение:
+  from outliers_viewer import qq_outliers_series
+  
+  На входе:
+  qq_outliers_series(dframe[column])
+  
+  На выходе:
+  outliers_dict = {"count" : count_outliiers,
+                   "count_min" : len(min_idx[0]),
+                   "count_max" : len(max_idx[0]),
+                   "val_min_outliers" : list(min_idx[0]),
+                   "val_max_outliers" : list(max_idx[0])}
   """
 
   min_idx=[]
@@ -58,11 +74,6 @@ def qq_outliers_series(ser_data):
   upper = ser_data >= (q75+1.5*IQR)
   lower = ser_data <= (q25-1.5*IQR)
 
-  # print(upper)
-
-  # min_idx.extend((ser_data.values < lower).index)
-  # max_idx.extend((ser_data.values > upper).index)
-
   min_idx = np.where(lower)
   max_idx = np.where(upper)
 
@@ -75,3 +86,52 @@ def qq_outliers_series(ser_data):
                    "val_max_outliers" : list(max_idx[0])}
   
   return outliers_dict
+
+
+def scope_outliers_filter(dframe):
+  """
+  :
+  :
+  Назначение: Создание сводной таблицы с показателями размаха 
+  и количества выбросов по каждой переменной
+
+  Пример:
+
+  scope_outliers_filter(df_pandas)
+  """
+
+  sc_qq = []
+  qq_out_count = []
+  qq_out_count_min = []
+  qq_out_count_max = []
+  qq_out_val_min = []
+  qq_out_val_max = []
+
+  for column in dframe.columns:
+
+    qos = qq_outliers_series(dframe[column])
+
+    qq_out_count.append(qos["count"])
+
+    qq_out_count_min.append(qos["count_min"])
+
+    qq_out_count_max.append(qos["count_max"])
+
+    qq_out_val_min.append(qos["val_min_outliers"])
+
+    qq_out_val_max.append(qos["val_max_outliers"])
+
+    scope = round(dframe[column].max() - dframe[column].min(),5)
+
+    sc_qq.append(scope)
+
+  df_scope = pd.DataFrame({"column_name" : list(dframe.columns),
+                           "scope" : sc_qq,
+                           "outliers_count" : qq_out_count,
+                           "outliers_count_min" : qq_out_count_min,
+                           "outliers_count_max" : qq_out_count_max,
+                           "val_min_outliers" : qq_out_val_min,
+                           "val_max_outliers" : qq_out_val_max
+                           })
+
+  return df_scope
