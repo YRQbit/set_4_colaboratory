@@ -494,3 +494,425 @@ def pvalue_test_collection(dframe, alpha=0.05, test_name=["jarque_bera"]):
       df_result = df_result.join(df_pval, how="right").fillna(" ")
   
   return df_result
+
+
+def SelectKBest_f_regression(X_dframe,Y_series, n_best=2):
+  """
+  :
+  :
+  skbfr = SelectKBest_f_regression(X_dframe=X_Cols,
+                         Y_series=Y_Target, 
+                         n_best=5)
+  
+  skbfr.to_frame().rename(columns = {0:"SKB_fReg"})
+  """
+  from sklearn.feature_selection import SelectKBest
+  from sklearn.feature_selection import f_regression
+
+  
+  KBest = SelectKBest(score_func = f_regression, k = n_best)
+  KBest = KBest.fit(X_dframe,Y_series)
+
+  cols = KBest.get_support(indices=True)
+
+  features_lst = X_dframe.columns[cols]
+  
+  return features_lst
+
+
+
+def SelectKBest_chi2(X_dframe,Y_series, n_best=2):
+  """
+  :
+  :
+  skbx2 = SelectKBest_chi2(X_dframe=X_Cols,
+                         Y_series=Y_Target, 
+                         n_best=5)
+  
+  skbx2.to_frame().rename(columns = {0:"SKB_chi2"})
+  """
+  from sklearn.feature_selection import SelectKBest
+  from sklearn.feature_selection import chi2
+
+  KBest = SelectKBest(score_func = chi2, k = 5)
+  KBest = KBest.fit(X_dframe,Y_series)
+
+  cols = KBest.get_support(indices=True)
+
+  features_lst = X_dframe.columns[cols]
+  
+  return features_lst
+
+
+def SelectPercentile_f_regression(X_dframe,Y_series, percents=80):
+  """
+  :
+  :
+  percents=80 :: выборка 80% лучших фич на основе их оценок
+  
+  SelectPercentile_f_regression(X_dframe=X_Cols,
+                         Y_series=Y_Target, 
+                         percents=50)
+  """
+  from sklearn.feature_selection import SelectPercentile
+  from sklearn.feature_selection import f_regression
+
+
+  SPercentile = SelectPercentile(score_func = f_regression, percentile=percents)
+    
+  SPercentile = SPercentile.fit(X_dframe,Y_series)
+
+  cols = SPercentile.get_support(indices=True)
+
+  features_lst = X_dframe.columns[cols]
+  
+  return features_lst
+
+
+
+def SelectPercentile_chi2(X_dframe,Y_series, percents=80):
+  """
+  :
+  :
+  percents=80 :: выборка 80% лучших фич на основе их оценок
+  
+  SelectPercentile_chi2(X_dframe=X_Cols,
+                         Y_series=Y_Target, 
+                         percents=50)
+  """
+  from sklearn.feature_selection import SelectPercentile
+  from sklearn.feature_selection import chi2
+
+
+  SPercentile = SelectPercentile(score_func = chi2, percentile=percents)
+    
+  SPercentile = SPercentile.fit(X_dframe,Y_series)
+
+  cols = SPercentile.get_support(indices=True)
+
+  features_lst = X_dframe.columns[cols]
+  
+  return features_lst
+
+
+
+def SFM_RFReg(X_dframe,Y_series, percents=80):
+  """
+  :
+  :
+  sfmrfreg = SFM_RFReg(X_dframe=X_Cols,
+          Y_series=Y_Target,
+          percents=50)
+
+  pd.DataFrame({"SFM_RFReg": sfmrfreg},
+             index=sfmrfreg)
+  """
+  from sklearn.ensemble import RandomForestRegressor
+  from sklearn.feature_selection import SelectFromModel
+
+  regressor = RandomForestRegressor(n_estimators=20, random_state=52)
+  
+  reg_fit = SelectFromModel(estimator=regressor)\
+            .fit(X_dframe,Y_series)\
+            .get_feature_names_out(X_dframe.columns)
+  
+  return reg_fit
+
+
+
+def SFM_RFClass(X_dframe,Y_series, percents=80):
+  """
+  :
+  :
+  sfmrfclass = SFM_RFClass(X_dframe=X_Cols,
+          Y_series=Y_Target,
+          percents=50)
+
+  pd.DataFrame({"SFM_RFClass": sfmrfclass},
+             index=sfmrfclass)
+  """
+  from sklearn.ensemble import RandomForestClassifier
+  from sklearn.feature_selection import SelectFromModel
+
+  regressor = RandomForestClassifier(n_estimators=20, random_state=52)
+  
+  reg_fit = SelectFromModel(estimator=regressor)\
+            .fit(X_dframe,Y_series)\
+            .get_feature_names_out(X_dframe.columns)
+  
+  return reg_fit
+
+
+def SFM_LReg(X_dframe,Y_series):
+  """
+  :
+  :
+  sfmlreg = SFM_LReg(X_dframe=X_Cols,
+         Y_series=Y_Target
+         )
+         
+  pd.DataFrame({"SFM_LReg": sfmlreg},
+             index=sfmlreg)
+  """
+
+  from sklearn.linear_model import LinearRegression
+  from sklearn.feature_selection import SelectFromModel 
+
+  regressor = LinearRegression()
+  reg_fit = SelectFromModel(estimator=regressor)\
+            .fit(X_dframe,Y_series)\
+            .get_feature_names_out(X_dframe.columns)
+
+  return reg_fit
+
+
+def SFM_SGDReg(X_dframe,Y_series, n_tol=0.0001, n_eta=0.01):
+  """
+  :
+  :
+  sfmsgdreg = SFM_SGDReg(X_dframe=X_Cols,
+                         Y_series=Y_Target
+                        )
+                        
+  pd.DataFrame({"SFM_LReg": sfmsgdreg},
+             index=sfmsgdreg)
+  """
+  
+  from sklearn.linear_model import SGDRegressor
+  from sklearn.feature_selection import SelectFromModel
+
+  regressor = SGDRegressor(tol=n_tol,
+                           eta0=n_eta, random_state=52 )
+  
+  reg_fit = SelectFromModel(estimator=regressor)\
+            .fit(X_dframe,Y_series)\
+            .get_feature_names_out(X_dframe.columns)
+
+  return reg_fit
+
+
+def RFE_SVR(X_dframe,Y_series, kernel_="linear",n_features_to_select_=2, step_=1):
+  """
+  :
+  :
+  rfesvr = RFE_SVR(X_dframe=X_Cols,
+        Y_series=Y_Target,
+        n_features_to_select_=5
+        )
+        
+  pd.DataFrame({"RFE_SVR": rfesvr},
+             index=rfesvr)
+  """
+
+  from sklearn.feature_selection import RFE
+  from sklearn.svm import SVR
+
+  estimator = SVR(kernel=kernel_)
+  selector = RFE(estimator,
+                 n_features_to_select=n_features_to_select_,
+                 step=step_)
+  selector = selector.fit(X_dframe, Y_series)
+  
+  # selector.support_
+  # selector.ranking_
+
+  cols = selector.get_support(indices=True)
+  features = X_dframe.columns[cols]
+
+  return features
+
+
+def RFE_LassoCV(X_dframe,Y_series, n_features_to_select_=2, step_=1):
+  """
+  rfelassocv = RFE_LassoCV(X_dframe=X_Cols,
+            Y_series=Y_Target,
+            n_features_to_select_=5
+        )
+
+  pd.DataFrame({"RFE_LassoCV": rfelassocv},
+             index=rfelassocv)
+  """
+
+  from sklearn.feature_selection import RFE
+  from sklearn.linear_model import LassoCV
+
+  estimator = LassoCV()
+
+  selector = RFE(estimator,
+                 n_features_to_select=n_features_to_select_,
+                 step=step_)
+  selector = selector.fit(X_dframe, Y_series)
+  
+  # selector.support_
+  # selector.ranking_
+
+  cols = selector.get_support(indices=True)
+  features = X_dframe.columns[cols]
+
+  return features
+
+
+def RFE_LReg(X_dframe,Y_series, n_features_to_select_=2, step_=1):
+  """
+  rfelreg = RFE_LReg(X_dframe=X_Cols,
+            Y_series=Y_Target,
+            n_features_to_select_=5
+        )
+        
+  pd.DataFrame({"RFE_LReg": rfelreg},
+             index=rfelreg)
+  """
+
+  from sklearn.feature_selection import RFE
+  from sklearn.linear_model import LinearRegression
+
+  estimator = LinearRegression()
+
+  selector = RFE(estimator,
+                 n_features_to_select=n_features_to_select_,
+                 step=step_)
+  selector = selector.fit(X_dframe, Y_series)
+  
+  # selector.support_
+  # selector.ranking_
+
+  cols = selector.get_support(indices=True)
+  features = X_dframe.columns[cols]
+
+  return features
+
+
+def SFS_LassoCV(X_dframe,Y_series, n_features_to_select_=2, direction_="forward"):
+  """
+  :
+  :
+  SFS_LassoCV(X_dframe=X_Cols,
+         Y_series=Y_Target,
+         n_features_to_select_=5,
+         direction_="forward"
+        )
+  :
+  :
+  SFS_LassoCV(X_dframe=X_Cols,
+         Y_series=Y_Target,
+         n_features_to_select_=5,
+         direction_="backward"
+        )
+  """
+
+  from sklearn.feature_selection import SequentialFeatureSelector
+  from sklearn.linear_model import LassoCV
+
+  estimator = LassoCV()
+
+  selector = SequentialFeatureSelector(estimator, 
+                                       n_features_to_select=n_features_to_select_,
+                                       direction=direction_)\
+                                       .fit(X_dframe, Y_series)
+
+  cols = selector.get_support()
+
+  features_lst = X_dframe.columns[cols]
+
+
+  return features_lst
+
+
+
+def SFS_RFReg(X_dframe,Y_series, n_features_to_select_=2, direction_="forward"):
+  """
+  :
+  :
+  SFS_RFReg(X_dframe=X_Cols,
+          Y_series=Y_Target,
+          n_features_to_select_=5,
+          direction_="forward")
+  :
+  :
+  SFS_RFReg(X_dframe=X_Cols,
+          Y_series=Y_Target,
+          n_features_to_select_=5,
+          direction_="backward")
+  """
+  from sklearn.ensemble import RandomForestRegressor
+  from sklearn.feature_selection import SequentialFeatureSelector
+
+  regressor = RandomForestRegressor(n_estimators=20, random_state=52)
+  
+  selector = SequentialFeatureSelector(estimator, 
+                                       n_features_to_select=n_features_to_select_,
+                                       direction=direction_)\
+                                       .fit(X_dframe, Y_series)
+
+  cols = selector.get_support()
+
+
+
+def coef_ElNet(X_dframe,Y_series,n_features_to_select_=2, plot="yes",abs_coef_ = "yes",**kwargs):
+  """
+  :
+  :
+  coef_ElNet(X_dframe=X_Cols,
+           Y_series=Y_Target,
+           n_features_to_select_=5,
+           abs_coef_ = "yes",
+           positive=False,
+           )
+  :
+  :
+  # ElasticNet_attr:
+  # 
+  # random_state=52,
+  # abs_coef_ = "yes"
+  # alpha=0.001,
+  # l1_ratio=0.75,
+  # normalize=True,
+  # positive=True
+  :
+  :
+  df_coef_ElNet = coef_ElNet(X_dframe=X_Cols,
+          Y_series=Y_Target,
+          n_features_to_select_=5)
+  
+  df_coef_ElNet["feature"].to_list()
+  """
+  import matplotlib.pyplot as plt
+  from sklearn.linear_model import ElasticNet
+
+  estimator=ElasticNet()
+
+
+  if len(kwargs) != 0:
+    for var_name, var_value in kwargs.items():
+      if hasattr(estimator,var_name) == True:
+        setattr(estimator, var_name, var_value)
+      else:
+        print(f"\033[35m::Warning::\033[0m ElasticNet does not contain an attribute :: \033[35m{var_name}\033[0m")
+
+
+  selector = estimator.fit(X_dframe,Y_series)
+
+
+  if abs_coef_ == "yes": importance = np.abs(selector.coef_)
+  elif abs_coef_ == "no": importance = selector.coef_
+
+
+  feature_names = np.array(X_dframe.columns)
+
+  df_coef = pd.DataFrame({"feature": feature_names,"coef_": importance})\
+                          .sort_values(["coef_"],ascending=False)\
+                          .head(n_features_to_select_)
+
+  if plot == "yes":
+
+    plt.barh(width=df_coef["coef_"], y=df_coef["feature"]),
+    plt.title("Feature importances via coefficients ElasticNet")
+    plt.show()
+    print("\n","::-::-"*15+"::"+"\n")
+
+  
+  return df_coef
+
+  features_lst = X_dframe.columns[cols]
+  
+  return reg_fit
