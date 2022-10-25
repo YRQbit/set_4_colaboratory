@@ -596,13 +596,13 @@ def SelectPercentile_chi2(X_dframe,Y_series, percents=80):
 
 
 
-def SFM_RFReg(X_dframe,Y_series, percents=80):
+def SFM_RFReg(X_dframe,Y_series, n_estimators_=20):
   """
   :
   :
   sfmrfreg = SFM_RFReg(X_dframe=X_Cols,
           Y_series=Y_Target,
-          percents=50)
+          n_estimators_=20)
 
   pd.DataFrame({"SFM_RFReg": sfmrfreg},
              index=sfmrfreg)
@@ -610,7 +610,8 @@ def SFM_RFReg(X_dframe,Y_series, percents=80):
   from sklearn.ensemble import RandomForestRegressor
   from sklearn.feature_selection import SelectFromModel
 
-  regressor = RandomForestRegressor(n_estimators=20, random_state=52)
+  regressor = RandomForestRegressor(n_estimators=n_estimators_,
+                                    random_state=52)
   
   reg_fit = SelectFromModel(estimator=regressor)\
             .fit(X_dframe,Y_series)\
@@ -620,13 +621,13 @@ def SFM_RFReg(X_dframe,Y_series, percents=80):
 
 
 
-def SFM_RFClass(X_dframe,Y_series, percents=80):
+def SFM_RFClass(X_dframe,Y_series, n_estimators_=20):
   """
   :
   :
   sfmrfclass = SFM_RFClass(X_dframe=X_Cols,
           Y_series=Y_Target,
-          percents=50)
+          n_estimators_=20)
 
   pd.DataFrame({"SFM_RFClass": sfmrfclass},
              index=sfmrfclass)
@@ -634,7 +635,8 @@ def SFM_RFClass(X_dframe,Y_series, percents=80):
   from sklearn.ensemble import RandomForestClassifier
   from sklearn.feature_selection import SelectFromModel
 
-  regressor = RandomForestClassifier(n_estimators=20, random_state=52)
+  regressor = RandomForestClassifier(n_estimators=n_estimators_,
+                                     random_state=52)
   
   reg_fit = SelectFromModel(estimator=regressor)\
             .fit(X_dframe,Y_series)\
