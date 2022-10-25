@@ -839,7 +839,7 @@ def SFS_RFReg(X_dframe,Y_series, n_features_to_select_=2, direction_="forward"):
   from sklearn.ensemble import RandomForestRegressor
   from sklearn.feature_selection import SequentialFeatureSelector
 
-  regressor = RandomForestRegressor(n_estimators=20, random_state=52)
+  estimator = RandomForestRegressor(n_estimators=20, random_state=52)
   
   selector = SequentialFeatureSelector(estimator, 
                                        n_features_to_select=n_features_to_select_,
