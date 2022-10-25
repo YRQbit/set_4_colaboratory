@@ -850,7 +850,7 @@ def SFS_RFReg(X_dframe,Y_series, n_features_to_select_=2, direction_="forward"):
 
   features_lst = X_dframe.columns[cols]
   
-  return reg_fit
+  return features_lst
 
 
 
