@@ -854,7 +854,7 @@ def SFS_RFReg(X_dframe,Y_series, n_features_to_select_=2, direction_="forward"):
 
 
 
-def coef_ElNet(X_dframe,Y_series,n_features_to_select_=2, plot="yes",abs_coef_ = "yes",**kwargs):
+def coef_ElNet(X_dframe,Y_series,n_features_to_select_=2, plot="yes",abs_coef_ = "yes", elastic_params={}):
   """
   :
   :
@@ -888,8 +888,8 @@ def coef_ElNet(X_dframe,Y_series,n_features_to_select_=2, plot="yes",abs_coef_ =
   estimator=ElasticNet()
 
 
-  if len(kwargs) != 0:
-    for var_name, var_value in kwargs.items():
+  if len(elastic_params) != 0:
+    for var_name, var_value in elastic_params.items():
       if hasattr(estimator,var_name) == True:
         setattr(estimator, var_name, var_value)
       else:
