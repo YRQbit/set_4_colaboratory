@@ -534,7 +534,7 @@ def SelectKBest_chi2(X_dframe,Y_series, n_best=2):
   from sklearn.feature_selection import SelectKBest
   from sklearn.feature_selection import chi2
 
-  KBest = SelectKBest(score_func = chi2, k = 5)
+  KBest = SelectKBest(score_func = chi2, k = n_best)
   KBest = KBest.fit(X_dframe,Y_series)
 
   cols = KBest.get_support(indices=True)
