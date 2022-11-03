@@ -362,7 +362,7 @@ def col_rm_one(dframe,col_name="any"):
     print(f"{col_name} не обнаружено")
     return dframe
   
-  #ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
+#ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
   
 class DFRame():
   """
@@ -406,6 +406,7 @@ class DFRame():
   :
   """
 
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
 
   @staticmethod
   def row_add_one(dframe,fillin = "nan"):
@@ -418,6 +419,7 @@ class DFRame():
     return row_add_one(dframe=dframe,
                        fillin=fillin)
 
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
 
   @staticmethod
   def row_add_any(dframe,count_rows=1, fillin = "nan"):
@@ -426,19 +428,24 @@ class DFRame():
                        count_rows=count_rows,
                        fillin=fillin)
 
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
 
   @staticmethod
   def row_insert_one_before(drame,insert_before_index=1):
     
     return row_insert_one_before(drame=drame,
                                  insert_before_index=insert_before_index)
-    
+
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
+  
   @staticmethod
   def row_insert_one_after(drame,insert_after_index=1):
 
     return row_insert_one_after(drame=drame,
                                 insert_after_index=insert_after_index)
 
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
+  
   @staticmethod
   def row_rm_one(dframe,index_number="all"):
     """
@@ -451,6 +458,8 @@ class DFRame():
     return row_rm_one(dframe=dframe,
                       index_number=index_number)
 
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
+  
   @staticmethod
   def row_rm_any(dframe,index_number=[]):
     """
@@ -463,13 +472,16 @@ class DFRame():
     return row_rm_any(dframe=dframe,
                       index_number=index_number)  
 
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
+  
   @staticmethod
   def col_add_one(dframe,col_name="any",fillin="nan"):
 
     return col_add_one(dframe=dframe,
                        col_name=col_name,
                        fillin=fillin)
-
+  
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
 
   @staticmethod
   def col_rm_one(dframe,col_name="any"):
@@ -482,7 +494,9 @@ class DFRame():
 
     return col_rm_one(dframe=dframe,
                       col_name=col_name)
-
+  
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
+  
   @staticmethod
   def row_add_Cols_as_Rows(dframe_out=pd.DataFrame(),out_col_name=[],dframe_in=pd.DataFrame(),orig_name=True):
     
@@ -491,9 +505,13 @@ class DFRame():
                                 dframe_in=dframe_in,
                                 orig_name=orig_name)
   
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
+  
   @staticmethod
   def col_copy_one_bigger(dframe_in,dframe_out,out_col_name=""):
 
     return col_copy_one_bigger(dframe_in=dframe_in,
                                dframe_out=dframe_out,
                                out_col_name=out_col_name)
+  
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
