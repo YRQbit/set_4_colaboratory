@@ -166,6 +166,7 @@ def row_add_Cols_as_Rows(dframe_out=pd.DataFrame(),
   lst_col_name = dframe_in.columns
   rows_nd_array = np.array(dframe_out.loc[:,out_col_name]) #.to_list()
 
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
 
   if len(rows_nd_array) > dframe_in.shape[1]:
     # dframe_out.shape = (row=4,...)
@@ -193,6 +194,8 @@ def row_add_Cols_as_Rows(dframe_out=pd.DataFrame(),
 
         dframe_in.rename(index={lst_col_name[k]:out_col_name[k]})
 
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
+  
   elif (len(rows_nd_array) == dframe_in.shape[1]) and (len(out_col_name) != 1):
     # dframe_out.shape = (row=3,...) + out_col_name = ["col_1","col_2"]
     # dframe_in.shape = (...,col=3)
@@ -209,6 +212,8 @@ def row_add_Cols_as_Rows(dframe_out=pd.DataFrame(),
        
         dframe_in = dframe_in.rename(index={f"row_{k}":out_col_name[k]})
 
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
+  
   elif (len(rows_nd_array) < dframe_in.shape[1]) and (len(out_col_name) != 1):
     # dframe_out.shape[0] = (row=3,...) + len(out_col_name) == 2
     # dframe_in.shape[1] = (...,col=4)
@@ -228,7 +233,8 @@ def row_add_Cols_as_Rows(dframe_out=pd.DataFrame(),
       if orig_name == True:
         
         dframe_in = dframe_in.rename(index={f"row_{k}":out_col_name[k]})
-      
+
+  # <:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:><:x:>
 
   elif (len(rows_nd_array[0]) < dframe_out.shape[1] )and(len(out_col_name) == 1):
     # dframe_out.shape = (...,col=3) + len(out_col_name) == 1 + rows_nd_array[0]== 1..N
